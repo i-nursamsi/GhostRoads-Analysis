@@ -21,12 +21,6 @@ library(dplyr)
 
 rm(list = ls())
 rm(caps, meta)
-#setwd("C:/Users/Ilyas Nursamsi/Dropbox/Ghost roads vs Wildlife Abundance/Roads vs Abundance- Analysis")
-#setwd("C:/Users/s4626542/Dropbox/Ghost roads vs Wildlife Abundance/Roads vs Abundance- Analysis")
-
-#setwd("C:/Users/s4626542/Dropbox/Ghost roads vs Wildlife Abundance/Roads vs Abundance- Analysis")
-#setwd("C:/Users/uqzamir/Dropbox/Ghost roads vs Wildlife Abundance/Roads vs Abundance- Data") #windows
-# setwd("/Users/zachary_amir/Dropbox//Ghost roads vs Wildlife Abundance/Roads vs Abundance- Data") #mac
 
 
 ## working directory for UQ computer
@@ -79,64 +73,6 @@ head(caps)
 tail(caps)
 str(caps) 
 
-#Need to make dates dates
-# no sampling dates in this dataset so i made one further below, so the code below is not applicable
-caps<- caps %>%
-  mutate(Date= as.Date(Date), Sampling_begin = as.Date(Sampling_begin), Sampling_end = as.Date(Sampling_end))
-
-## Clean up survey_id   ### I commented these out because it is not applicable with my current dataset
-# names(caps)[7]= "survey_id"
-# sort(unique(caps$survey_id))
-# caps$survey_id[startsWith(caps$survey_id, "BBS_f")]= "BBS_frag"
-# caps$survey_id[startsWith(caps$survey_id, "BBS_m")]= "BBS_main"
-# 
-# caps$survey_id[startsWith(caps$survey_id, "Kerinci_f")]= "Kerinci_frag"
-# caps$survey_id[startsWith(caps$survey_id, "Kerinci_m")]= "Kerinci_main"
-# 
-# caps$survey_id[startsWith(caps$survey_id, "Leuser_f")]= "Leuser_frag"
-# caps$survey_id[startsWith(caps$survey_id, "Leuser_m")]= "Leuser_main"
-# 
-# caps$survey_id[startsWith(caps$survey_id, "Sing")]= "Singapore"
-sort(unique(caps$survey_id)) #23 surveys
-
-table(caps$survey_id)
-
-### Fix a few legacy Species name issues  ### this legacy species name issues is also not applicable for my dataset
-# # Standardize Muntjacs
-# caps$Species[grepl("Muntiacus", caps$Species)]= "Muntiacus_muntjak" 
-# # Fix misidentified serow at Khao Yai 
-# caps$Species[caps$Species == "Rusa_unicolor" & 
-#                caps$survey_id == "KhaoYai2019" & 
-#                caps$Date == "2019-07-31"]= "Capricornis_sp."
-# # Standardize Serow
-# caps$Species[grepl("Capricorn", caps$Species)]= "Capricornis_sp." 
-# # Fix Asian bear and Lambir to be Sun bear
-# caps$Species[caps$Species == "Ursus_thibetanus" & caps$survey_id == "Lambir2017"]= "Helarctos_malayanus"
-# ## probelm BP at BBS_frag needs to be scrofa
-# caps$Species[caps$Species == "Sus_barbatus" & caps$survey_id == "BBS_frag"]= "Sus_scrofa"
-
-
-# ## Add Landscape factor covariate  ## this landscape will be added in the later below code.
-# caps$Landscape = "Singapore"
-# caps$Landscape[caps$survey_id == "Lambir2017"]= "Lambir_Hills"
-# caps$Landscape[caps$survey_id == "KhaoChong2018"]= "Khao_Chong"
-# caps$Landscape[caps$survey_id == "KhaoYai2019"]= "Khao_Yai"
-# caps$Landscape[startsWith(caps$survey_id, "Ulu")]= "Ulu_Muda"
-# caps$Landscape[startsWith(caps$survey_id, "Pasoh")]= "Pasoh"
-# caps$Landscape[startsWith(caps$survey_id, "Danum")]= "Danum_Valley"
-# caps$Landscape[startsWith(caps$survey_id, "BBS_")]= "BBS"
-# caps$Landscape[startsWith(caps$survey_id, "Kerinci_")]= "Kerinci"
-# caps$Landscape[startsWith(caps$survey_id, "Leuser_")]= "Leuser"
-
-head(caps)
-##check the landscape column
-str(unique(caps$Landscape)) ## i wonder why there is no column landscape in this framework
-# i think the landscape column will be added in the later metadata, otherwise there will be two "dataset"
-# column
-
-
-
-
 
 ## Remove sampling units that were only active for 1 day
 #caps = caps[!caps$cell_id_1km %in% c("263041_Pasoh_TEAM_2014", "853040_Danum_Valley_2019a"),]
@@ -184,16 +120,6 @@ meta<- mutate_if(meta, is.factor, as.character)
 ## Remove sampling units that were only active for 1 day
 #meta = meta[!meta$cell_id_1km %in% c("263041_Pasoh_TEAM_2014", "853040_Danum_Valley_2019a"),]
 
-## Clean up survey_id
-sort(unique(meta$survey_id))
-# meta$survey_id[startsWith(meta$survey_id, "BBS_f")]= "BBS_frag"
-# meta$survey_id[startsWith(meta$survey_id, "BBS_m")]= "BBS_main"
-
-# meta$survey_id[startsWith(meta$survey_id, "Kerinci_f")]= "Kerinci_frag"
-# meta$survey_id[startsWith(meta$survey_id, "Kerinci_m")]= "Kerinci_main"
-
-# meta$survey_id[startsWith(meta$survey_id, "Leuser_f")]= "Leuser_frag"
-# meta$survey_id[startsWith(meta$survey_id, "Leuser_m")]= "Leuser_main"
 
 # meta$survey_id[startsWith(meta$survey_id, "Sing")]= "Singapore"
 sort(unique(meta$survey_id)) #2 surveys for now! 
@@ -303,12 +229,6 @@ sort(unique(caps$Species))
 
 
 #look at the number of detected individue for each of the species within the landscapes
-
-
-
-caps
-
-
 
 
 ######## Loop to Create UMFs ##########
@@ -531,15 +451,9 @@ result <- data %>%
 
 write.csv(result, "coeff_filtered_univariate_230207[shrink3_ZIP].csv")
 
-
-
-
-
 mod.list$Muntiacus_muntjak
 mod.list$Sus_scrofa
 mod.list$Rusa_unicolor
-
-
 
 
 mod.list$Tragulus_sp.
