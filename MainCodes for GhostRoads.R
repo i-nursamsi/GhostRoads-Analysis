@@ -322,7 +322,7 @@ for(t in 1:length(Species)){ #run this loop for each Species
   # shrink the matrix
   dh.mat = shrink.pcount(mat, 5) # using 3 day window b/c thats what Ive used in the past 
   ## COME HERE AND CHANGE! Using a larger shrink now b/c fewer sites and low detections
-
+  
   ## limit the sampling duration in the dh matrix 
   # dh.mat =  dh.mat[, 1:25] #limit maximum sampling duration to 125 days.
   ## COME HERE! Leuser has no sites > 125 days, but others will. 
@@ -396,7 +396,7 @@ for(i in 1:length(umf.list)){  # Repeat for every predator Species
   p$Species = sp
   null.prediction = rbind(null.prediction, p)
   
-
+  
   res = list() #store results per Species 
   
   for(l in 1:length(names(m@siteCovs)[!names(m@siteCovs) %in% skip])){ # Repeat for each variable in SiteCovs, 
@@ -416,8 +416,8 @@ for(i in 1:length(umf.list)){  # Repeat for every predator Species
   names(res)[l+1]= "null"
   
   c = pcount(~Cell_Effort ~ Avg_RdLengthkm_GRIP_1000 + Avg_RdLengthkm_OSM_1000 + Avg_RdLengthkm_GHOST_1000 + Avg_hunting_accessibility_1km + Landscape, m)
- 
-   d = pcount(~Cell_Effort ~ Avg_RdCount_GRIP_1000 + Avg_RdCount_OSM_1000 + Avg_RdCount_GHOST_1000 + Avg_hunting_accessibility_1km + Landscape, m)
+  
+  d = pcount(~Cell_Effort ~ Avg_RdCount_GRIP_1000 + Avg_RdCount_OSM_1000 + Avg_RdCount_GHOST_1000 + Avg_hunting_accessibility_1km + Landscape, m)
   
   res[[l+2]] = c
   names(res)[l+2] = "Length_combo"
@@ -498,7 +498,7 @@ for(i in 1:length(mod.list)){ ## Repeat for each Species
     
     ## Standardize var names and use model name to fill in later on graph.
     # But do this differently for multi vs univariate models 
-
+    
     if(grepl("combo", names(m)[l])){ # only do this for multi-variate mods
       
       t = separate(r, vars, into = c("a",'b',"c"), sep = "_")
@@ -524,7 +524,7 @@ for(i in 1:length(mod.list)){ ## Repeat for each Species
       
       r$source = "NA"
     }
-       
+    
     ## Save the Species name
     r$Species = sp
     
@@ -540,7 +540,7 @@ for(i in 1:length(mod.list)){ ## Repeat for each Species
     ## Run a Goodness of Fit test from AICmodavg package
     g = Nmix.chisq(m[[l]])
     r$chi_sq = g$chi.square
-
+    
     ## Save results
     res[[l]]= r
     names(res)[l]= unique(r$model)
@@ -608,12 +608,12 @@ for(i in 1:length(unique(coeff.res$Species))){
     scale_x_discrete(labels = c("Avg_RdCount_OSM_1000" = "OSM Road Density 1km",
                                 "Avg_RdCount_GRIP_1000" = "GRIP Road Density 1km",
                                 "Avg_RdLengthkm_GRIP_1000" = "GRIP Road Length 1km",
-                                         "Avg_RdCount_GHOST_1000" = "GHOST Road Density 1km",
-                                         "Avg_RdLengthkm_GHOST_1000" = "GHOST Road Length 1km",
-                                         "Avg_RdLengthkm_OSM_1000" = "GHOST Road Length 1km",
+                                "Avg_RdCount_GHOST_1000" = "GHOST Road Density 1km",
+                                "Avg_RdLengthkm_GHOST_1000" = "GHOST Road Length 1km",
+                                "Avg_RdLengthkm_OSM_1000" = "GHOST Road Length 1km",
                                 "Avg_hunting_accessibility_1km" = "Hunting accessibility 1km"))+
     theme(axis.text.x = element_text(angle = 20, vjust = 0.9, hjust= .95))
-
+  
   coeff.uni.plots[[i]]= p
   names(coeff.uni.plots)[i]= sp
   
@@ -657,7 +657,7 @@ for(i in 1:length(unique(coeff.res$Species))){
       theme_classic()+
       geom_hline(aes(yintercept = 0))+
       labs(y = "Estimate", x = NULL, fill = "Data Source", title = title)
-      
+    
     temp[[l]] = p
     names(temp)[l] = unique(a$model)[l]
     
@@ -781,9 +781,9 @@ for(i in 1:length(mod.list)){ # repeat for each Species
         temp.count[[l]] = p
         names(temp.count)[l] = v
         
-      
+        
       }
-    
+      
     }
     
   }
@@ -875,33 +875,33 @@ for(i in 1:2){
       }
     } # end length 
     
-      if(n == "count"){
-        
-        if(unique(a$sig) == "Non-Significant"){
-          
-          p =
-            ggplot(a, aes(y = Predicted, x = norm.cov))+
-            geom_line(aes(color = source), linetype = "dashed", size = 2)+
-            geom_ribbon(aes(ymin = lower, ymax = upper, fill = source), alpha = .4)+
-            theme_classic()+
-            labs(y = "Predicted Abundance", x = "Road Density in 1km Radius", title = sp, color = "Data Source")+
-            guides(aes(fill = FALSE, linetype = FALSE))
-          
-        }else{
-          
-          p =
-            ggplot(a, aes(y = Predicted, x = norm.cov))+
-            geom_line(aes(color = source), size = 2)+
-            geom_ribbon(aes(ymin = lower, ymax = upper, fill = source), alpha = .4)+
-            theme_classic()+
-            labs(y = "Predicted Abundance", x = "Road Density in 1km Radius", title = sp, color = "Data Source")+
-            guides(aes(fill = FALSE, linetype = FALSE))
-        }
-      } # end count 
-    
-     if(n == "hunting"){
+    if(n == "count"){
       
-       if(unique(a$sig) == "Non-Significant"){
+      if(unique(a$sig) == "Non-Significant"){
+        
+        p =
+          ggplot(a, aes(y = Predicted, x = norm.cov))+
+          geom_line(aes(color = source), linetype = "dashed", size = 2)+
+          geom_ribbon(aes(ymin = lower, ymax = upper, fill = source), alpha = .4)+
+          theme_classic()+
+          labs(y = "Predicted Abundance", x = "Road Density in 1km Radius", title = sp, color = "Data Source")+
+          guides(aes(fill = FALSE, linetype = FALSE))
+        
+      }else{
+        
+        p =
+          ggplot(a, aes(y = Predicted, x = norm.cov))+
+          geom_line(aes(color = source), size = 2)+
+          geom_ribbon(aes(ymin = lower, ymax = upper, fill = source), alpha = .4)+
+          theme_classic()+
+          labs(y = "Predicted Abundance", x = "Road Density in 1km Radius", title = sp, color = "Data Source")+
+          guides(aes(fill = FALSE, linetype = FALSE))
+      }
+    } # end count 
+    
+    if(n == "hunting"){
+      
+      if(unique(a$sig) == "Non-Significant"){
         
         p =
           ggplot(a, aes(y = Predicted, x = norm.cov))+
@@ -922,7 +922,7 @@ for(i in 1:2){
           guides(aes(fill = FALSE, linetype = FALSE))
       }
     } 
-        
+    
     # save the plots per Species
     temp[[l]] = p
     names(temp)[l] = sp

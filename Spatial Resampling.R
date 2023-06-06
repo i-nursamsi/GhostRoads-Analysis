@@ -65,8 +65,8 @@ unique(meta$land)
 # meta$land[meta$Landscape == "Mengao_Subreserve"] = "Mengao"
 # meta$land[meta$Landscape == "Mengla_Subreserve"] = "Mengla"
 # should be good for now
-  
-  
+
+
 
 
 ########### Ultra-Loop to Generate Sampling Units #######
@@ -138,7 +138,7 @@ for(i in 1:length(unique(meta$Landscape))){ #for each unique landscape
   # ggplot()+
   #   geom_sf(data = hex5)+
   #   geom_sf(data = shape)#, aes(color = source))#[shape$camera_id == p,])
-
+  
   # Join hexagons and points by matching points that intersect polygons and remove the geometry
   t1 = st_join(shape, hex1, join = st_intersects) %>%
     st_set_geometry(NULL)
@@ -186,7 +186,7 @@ for(i in 1:length(unique(meta$Landscape))){ #for each unique landscape
     
     ## and bind new single cell id
     t = rbind(r, t)
-
+    
   }
   
   ## run distinct to verify there are no repeats
@@ -315,7 +315,7 @@ for(i in ECL_meta$camera_id){ #select a single camera_id
   rec$cell_id_5km[rec$camera_id == i] = ECL_meta$cell_id_5km[ECL_meta$camera_id == i]
   rec$cell_id_10km[rec$camera_id == i] = ECL_meta$cell_id_10km[ECL_meta$camera_id == i]
   
-
+  
 }
 rm(i)
 
@@ -330,11 +330,11 @@ anyNA(rec)
 
 ## Select which cols we want to average (i.e. by selecting all except which we dont want!)
 avg_col = colnames(ECL_meta)[!colnames(ECL_meta) %in% 
-                                   c("cell_id_1km","Polygon1km","Cell_Effort","survey_id","camera_id",
-                                     "cell_id_3km","Polygon3km", "cell_id_5km","Polygon5km",
-                                     "cell_id_10km","Polygon10km", "land", 
-                                     "Landscape","camera_start.date","camera_end.date",
-                                     "deployment_seq_date","retrival_seq_date")]
+                               c("cell_id_1km","Polygon1km","Cell_Effort","survey_id","camera_id",
+                                 "cell_id_3km","Polygon3km", "cell_id_5km","Polygon5km",
+                                 "cell_id_10km","Polygon10km", "land", 
+                                 "Landscape","camera_start.date","camera_end.date",
+                                 "deployment_seq_date","retrival_seq_date")]
 ## This^^ makes sense when we have many cols, but I only have a few at the moment
 
 # avg_col = c("elevation", "forest_integrity", "human_foot", "Latitude", "Longitude",
@@ -434,16 +434,16 @@ for(i in 1:length(names(ECL_meta[grepl("cell_id_", names(ECL_meta))]))){ # Repea
                         all_of(s), all_of(p), all_of(avg), 
                         Cell_Effort, Sampling_begin, Sampling_end, 
                         survey_id, Landscape, cameras_included)
-                        # 
-                        # 
-                        # ## Character cols 
-                        # cameras_included, survey_id, Landscape, source, 
-                        # camera_type, trail_status, notes, Forest_type,  
-                        # habitat, baited)
+    # 
+    # 
+    # ## Character cols 
+    # cameras_included, survey_id, Landscape, source, 
+    # camera_type, trail_status, notes, Forest_type,  
+    # habitat, baited)
     
     ## save it! 
     r[[l]] = new
-
+    
     
   }
   
@@ -510,7 +510,7 @@ for(u in 1:length(names(rec[grepl("cell_id_", names(rec))]))){ # Repeat for each
         #create the new line to fill with re-sampled data
         new = as.data.frame(matrix(NA, nrow = 1, ncol = ncol(rec)))
         colnames(new) = colnames(rec)
-      
+        
         #Sampling Unit-level information (t)
         new[,s] = unique(t[[s]]) ## Cell_id that can change scales
         new$survey_id = unique(t$survey_id) # survey_id
